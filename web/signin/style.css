@@ -1,0 +1,39 @@
+body {
+  font-family: arial;
+}
+a {
+  text-decoration: none;
+}
+.content {
+  margin: 10px 10px;
+}
+.btn {
+  background-color: #38BCE8;
+  color: #fff;
+  border: 0;
+  font-size: 14px;
+  padding: 5px 20px;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+.btn:hover {
+  background-color: #3CCBFF;
+}
+input[type="text"], input[type="password"] {
+  display: block;
+  width: 200px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  padding: 5px;
+  margin: 10px 0;
+}
+body .warn {
+  border: 1px solid #FC1023;
+}
+.notice {
+  color: #FC1023;
+  font-size: 14px;
+}
