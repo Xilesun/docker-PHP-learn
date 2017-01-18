@@ -32,7 +32,7 @@ function ValidateUser () {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
-        if (this.responseText === 'failed') {
+        if (this.responseText === 'Username exists') {
           user.className = 'warn';
           user_notice.innerHTML = this.responseText;
         } else {
@@ -41,9 +41,9 @@ function ValidateUser () {
           return true;
         }
       }
-      xhttp.open('GET', 'function.php?validateuser=' + user.value, true);
-      xhttp.send();
     }
+    xhttp.open('GET', 'function.php?validateuser=' + user.value, true);
+    xhttp.send();
   }
 }
 function ValidatePass () {
@@ -93,8 +93,8 @@ function ValidateSubmit (e) {
     e.preventDefault();
   }
 }
-addEventHandler(user, 'keyup', ValidateUser);
-addEventHandler(pass, 'keyup', ValidatePass);
-addEventHandler(confirm_pass, 'keyup', ValidateConfirmPass);
-addEventHandler(email, 'keyup', ValidateEmail);
+addEventHandler(user, 'input', ValidateUser);
+addEventHandler(pass, 'input', ValidatePass);
+addEventHandler(confirm_pass, 'input', ValidateConfirmPass);
+addEventHandler(email, 'input', ValidateEmail);
 addEventHandler(form, 'submit', ValidateSubmit);
