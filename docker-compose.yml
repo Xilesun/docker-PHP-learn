@@ -23,6 +23,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: yangqia
+    entrypoint: ./docker-entrypoint.sh
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
