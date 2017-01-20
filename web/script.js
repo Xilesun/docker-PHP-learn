@@ -35,6 +35,7 @@ function ValidateUser () {
         if (this.responseText === 'Username exists') {
           user.className = 'warn';
           user_notice.innerHTML = this.responseText;
+          return false;
         } else {
           user.className = '';
           user_notice.innerHTML = '';
@@ -42,7 +43,7 @@ function ValidateUser () {
         }
       }
     }
-    xhttp.open('GET', 'function.php?validateuser=' + user.value, true);
+    xhttp.open('GET', '/validateuser/' + user.value, true);
     xhttp.send();
   }
 }
