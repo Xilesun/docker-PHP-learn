@@ -10,7 +10,7 @@ session_start();
   </head>
 <body>
 <?
-if($_SESSION['user']){
+if(isset($_SESSION['user'])){
 ?>
 <div class="content">Hello, <?= $_SESSION['user'] ?></div><a class="btn" href="/logout">Logout</a>
 <?

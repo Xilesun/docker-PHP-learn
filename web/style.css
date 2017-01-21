@@ -33,7 +33,8 @@ input[type="text"], input[type="password"] {
 body .warn {
   border: 1px solid #FC1023;
 }
-.notice {
+.error {
   color: #FC1023;
   font-size: 14px;
+  display: block;
 }

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'vendor/autoload.php';
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
@@ -9,6 +10,9 @@ $route->get('/', function(){
 });
 
 $route->get('/signin', function(){
+  if(isset($_SESSION['user'])) {
+    header('location: /');
+  }
   require('signin.html');
 });
 
@@ -18,16 +22,15 @@ $route->get('/signup', function(){
 
 $route->post('/signin', function(){
   include('conn.php');
-  session_start();
 
   $user = $_POST['user'];
   $pass = $_POST['pass'];
-  $num = $conn -> prepare("SELECT id FROM user WHERE username = '$user' AND password = '$pass'");
-  $num -> execute();
+  $num = $conn->prepare("SELECT id FROM user WHERE username = '$user' AND password = '$pass'");
+  $num->execute();
   
-  if($num -> rowCount() == 1) {
+  if($num->rowCount() == 1) {
     $_SESSION['user'] = $user;
-    header("location: /");
+    header('location: /');
   } else {
     echo "failed";
   }
@@ -35,35 +38,32 @@ $route->post('/signin', function(){
 
 $route->post('/signup', function(){
   include('conn.php');
-  session_start();
 
   $user = $_POST['user'];
   $pass = $_POST['pass'];
   $email = $_POST['email'];
 
-  $sql = $conn -> prepare("INSERT INTO `user`(`username`, `password`, `email`) VALUES ('$user', '$pass', '$email')");
-  if($sql -> execute()){
+  $sql = $conn->prepare("INSERT INTO `user`(`username`, `password`, `email`) VALUES ('$user', '$pass', '$email')");
+  if($sql->execute()){
       header("location: /signin");
   }
 });
 
 $route->get('/validateuser/{user}', function($user){
   include('conn.php');
-  session_start();
   
   //check whether the username exists or not
-  $check = $conn -> prepare("SELECT id FROM user WHERE username = '$user'");
-  $check -> execute();
+  $check = $conn->prepare("SELECT id FROM user WHERE username = '$user'");
+  $check->execute();
 
-  if($check -> rowCount() > 0) {
-    echo 'Username exists';
+  if($check->rowCount() > 0) {
+    echo json_encode('Username exists');
   } else {
-    echo 'success';
+    echo json_encode('true');
   }
 });
 
 $route->get('/logout', function(){
-  session_start();
   session_destroy();
   header("location: /");
 });
