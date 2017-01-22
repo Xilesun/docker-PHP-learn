@@ -6,18 +6,18 @@ use Phroute\Phroute\Dispatcher;
 $route = new RouteCollector();
 
 $route->get('/', function(){
-  require('homepage.php');
+  require('templates/homepage.php');
 });
 
 $route->get('/signin', function(){
   if(isset($_SESSION['user'])) {
     header('location: /');
   }
-  require('signin.html');
+  require('templates/signin.html');
 });
 
 $route->get('/signup', function(){
-  require('signup.html');
+  require('templates/signup.html');
 });
 
 $route->post('/signin', function(){

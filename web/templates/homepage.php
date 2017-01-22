@@ -1,12 +1,11 @@
 <?php
 ob_start();
-session_start();
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/style.css">
   </head>
 <body>
 <?
