@@ -1,11 +1,16 @@
 <?php
 session_start();
+include('includes/conn.php');
 require 'vendor/autoload.php';
+
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
 $route = new RouteCollector();
 
 $route->get('/', function(){
+  if(!isset($_SESSION['user'])) {
+    header("location: /signin");
+  }
   require('templates/homepage.php');
 });
 
@@ -21,8 +26,7 @@ $route->get('/signup', function(){
 });
 
 $route->post('/signin', function(){
-  include('conn.php');
-
+  $conn = getPDO();
   $user = $_POST['user'];
   $pass = $_POST['pass'];
   $num = $conn->prepare("SELECT id FROM user WHERE username = '$user' AND password = '$pass'");
@@ -32,13 +36,12 @@ $route->post('/signin', function(){
     $_SESSION['user'] = $user;
     header('location: /');
   } else {
-    echo "failed";
+    header('location: /signin');
   }
 });
 
 $route->post('/signup', function(){
-  include('conn.php');
-
+  $conn = getPDO();
   $user = $_POST['user'];
   $pass = $_POST['pass'];
   $email = $_POST['email'];
@@ -49,9 +52,9 @@ $route->post('/signup', function(){
   }
 });
 
-$route->get('/validateuser/{user}', function($user){
-  include('conn.php');
-  
+$route->get('/validateuser', function(){  
+  $conn = getPDO();
+  $user = $_GET['user'];
   //check whether the username exists or not
   $check = $conn->prepare("SELECT id FROM user WHERE username = '$user'");
   $check->execute();
