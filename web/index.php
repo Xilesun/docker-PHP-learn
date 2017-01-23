@@ -29,8 +29,10 @@ $route->get('/signup', function(){
 });
 
 $route->post('/signin', function(){
-  setcookie('user', null, 1);
-  $conn = getPDO();
+  setcookie('user', null, -1);
+
+  global $conn;
+
   $user = $_POST['user'];
   $pass = $_POST['pass'];
 
@@ -39,8 +41,8 @@ $route->post('/signin', function(){
   $sql->execute();
   
   if($sql->rowCount() == 1) {
-    $hash = $sql->fetchAll();
-    if(password_verify($pass, $hash[0]['password'])) {
+    $hash = $sql->fetch();
+    if(password_verify($pass, $hash['password'])) {
       $_SESSION['user'] = $user;
       if($_POST['remember'] == 'on') {
         setcookie('user', $user, time()+60*60*24*7);
@@ -55,11 +57,12 @@ $route->post('/signin', function(){
 });
 
 $route->post('/signup', function(){
-  $conn = getPDO();
+  global $conn;
+
   $user = $_POST['user'];
   $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
   $email = $_POST['email'];
-  echo $user . $pass . $email;
+
   $sql = $conn->prepare("INSERT INTO `user`(`username`, `password`, `email`) VALUES (:user, :pass, :email)");
   $sql->bindParam(':user', $user, PDO::PARAM_STR);
   $sql->bindParam(':pass', $pass, PDO::PARAM_STR);
@@ -70,7 +73,8 @@ $route->post('/signup', function(){
 });
 
 $route->get('/validateuser', function(){  
-  $conn = getPDO();
+  global $conn;
+  
   $user = $_GET['user'];
   //check whether the username exists or not
   $check = $conn->prepare("SELECT id FROM user WHERE username = :user");
@@ -86,7 +90,7 @@ $route->get('/validateuser', function(){
 
 $route->get('/logout', function(){
   session_destroy();
-  setcookie('user', null, 1);
+  setcookie('user', null, -1);
   header("location: /");
 });
 
