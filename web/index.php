@@ -8,6 +8,9 @@ use Phroute\Phroute\Dispatcher;
 $route = new RouteCollector();
 
 $route->get('/', function(){
+  if(isset($_COOKIE['user'])) {
+    $_SESSION['user'] = $_COOKIE['user'];
+  }
   if(!isset($_SESSION['user'])) {
     header("location: /signin");
   }
@@ -26,6 +29,7 @@ $route->get('/signup', function(){
 });
 
 $route->post('/signin', function(){
+  setcookie('user', null, 1);
   $conn = getPDO();
   $user = $_POST['user'];
   $pass = $_POST['pass'];
@@ -38,6 +42,9 @@ $route->post('/signin', function(){
     $hash = $sql->fetchAll();
     if(password_verify($pass, $hash[0]['password'])) {
       $_SESSION['user'] = $user;
+      if($_POST['remember'] == 'on') {
+        setcookie('user', $user, time()+60*60*24*7);
+      }
       header('location: /');
     } else {
       echo 'Password incorrect';
@@ -79,6 +86,7 @@ $route->get('/validateuser', function(){
 
 $route->get('/logout', function(){
   session_destroy();
+  setcookie('user', null, 1);
   header("location: /");
 });
 

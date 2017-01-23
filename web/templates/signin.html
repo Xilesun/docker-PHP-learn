@@ -3,12 +3,22 @@
   <head>
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="../assets/style.css">
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
   </head>
 <body>
-  <form action="/signin" method="post">
-    <label for="user">Username</label><input type="text" name="user" /><br />
-    <label for="pass">Password</label><input type="password" name="pass" /><br />
+  <form action="/signin" method="post" id="signin">
+    <label for="user">Username</label>
+    <input type="text" name="user" 
+     data-rule-required="true"
+    /><br />
+    <label for="pass">Password</label>
+    <input type="password" name="pass" 
+     data-rule-required="true"
+    /><br />
+    <input type="checkbox" name="remember"><span>remember me</span><br /><br />
     <input type="submit" name="signin" value="sign in" class="btn" /><a class="btn" href="/signup">Sign up</a>
+    <script src="../assets/script.js"></script>
   </form>
 </body>
 </html>
