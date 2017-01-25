@@ -5,27 +5,32 @@ require 'vendor/autoload.php';
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
+use twig\twig;
+
 $route = new RouteCollector();
 
-$route->get('/', function(){
+$loader = new Twig_Loader_Filesystem('templates');
+$twig = new Twig_Environment($loader);
+
+$route->get('/', function() use ($twig) {
   if(isset($_COOKIE['user'])) {
     $_SESSION['user'] = $_COOKIE['user'];
   }
   if(!isset($_SESSION['user'])) {
     header("location: /signin");
   }
-  require('templates/homepage.php');
+  echo $twig->render('homepage.html', array('user' => $_SESSION['user']));
 });
 
-$route->get('/signin', function(){
+$route->get('/signin', function() use ($twig) {
   if(isset($_SESSION['user'])) {
     header('location: /');
   }
-  require('templates/signin.html');
+  echo $twig->render('signin.html');
 });
 
-$route->get('/signup', function(){
-  require('templates/signup.html');
+$route->get('/signup', function() use ($twig) {
+  echo $twig->render('signup.html');
 });
 
 $route->post('/signin', function(){

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block link %}
+<link rel="stylesheet" type="text/css" href="../assets/style.css">
+{% endblock %}
+{% block content %}
+<div class="content">Hello, {{ user }}</div><a class="btn" href="/logout">Logout</a>
+{% endblock %}
+

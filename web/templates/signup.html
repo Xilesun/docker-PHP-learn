@@ -1,42 +1,43 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Sign up</title>
-    <link rel="stylesheet" type="text/css" href="../assets/style.css">
-    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-  </head>
-<body>
-  <form action="signup" method="post" id="signup">
-    <label for="user">Username</label>
-    <input type="text" name="user" id="user" 
-     data-rule-required="true"
-     data-msg-required="Username is required"
-     data-rule-rangelength="6,12"
-     data-msg-rangelength="Username should be 6 ~ 12 letters"
-     data-rule-remote="/validateuser"
-    />
-    <label for="pass">Password</label>
-    <input type="password" id="pass" name="pass" 
-     data-rule-required="true"
-     data-msg-required="Password is required"
-    />
-    <label for="confirm_pass">Confirm Password</label>
-    <input type="password" name="confirm_pass" 
-     data-rule-required="true"
-     data-msg-required="Password should be confirmed"
-     data-rule-equalto="#pass"
-     data-msg-equalto="Password should be the same"
-    />
-    <label for="email">E-mail</label>
-    <input type="text" name="email" 
-     data-rule-required="true"
-     data-msg-required="E-mail is required"
-     data-rule-email="true"
-     data-msg-email="Your email is invalid"
-    />
-    <input type="submit" name="signup" value="Sign up" class="btn" /><a class="btn" href="/signin">Sign in</a>
-  </form>
-  <script src="../assets/script.js"></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Sign up{% endblock %}
+{% block link %}
+<link rel="stylesheet" type="text/css" href="../assets/style.css">
+<script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+{% endblock %}
+{% block content %}
+<form action="signup" method="post" id="signup">
+  <label for="user">Username</label>
+  <input type="text" name="user" id="user" 
+   data-rule-required="true"
+   data-msg-required="Username is required"
+   data-rule-rangelength="6,12"
+   data-msg-rangelength="Username should be 6 ~ 12 letters"
+   data-rule-remote="/validateuser"
+  />
+  <label for="pass">Password</label>
+  <input type="password" id="pass" name="pass" 
+   data-rule-required="true"
+   data-msg-required="Password is required"
+  />
+  <label for="confirm_pass">Confirm Password</label>
+  <input type="password" name="confirm_pass" 
+   data-rule-required="true"
+   data-msg-required="Password should be confirmed"
+   data-rule-equalto="#pass"
+   data-msg-equalto="Password should be the same"
+  />
+  <label for="email">E-mail</label>
+  <input type="text" name="email" 
+   data-rule-required="true"
+   data-msg-required="E-mail is required"
+   data-rule-email="true"
+   data-msg-email="Your email is invalid"
+  />
+  <input type="submit" name="signup" value="Sign up" class="btn" /><a class="btn" href="/signin">Sign in</a>
+</form>
+{% endblock %}
+{% block js %}    
+<script src="../assets/script.js"></script>
+{% endblock %}

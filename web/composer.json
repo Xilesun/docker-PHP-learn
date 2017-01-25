@@ -1,5 +1,6 @@
 {
   "require": {
-    "phroute/phroute": "*"
+    "phroute/phroute": "*",
+    "twig/twig": "~2.0"
   }
 }
