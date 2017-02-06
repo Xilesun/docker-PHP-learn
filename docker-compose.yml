@@ -11,7 +11,7 @@ services:
     links:
       - php
   php:
-    build: .
+    build: ./php
     restart: always
     links:
       - mysql
@@ -23,19 +23,19 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: yangqia
-    entrypoint: ./docker-entrypoint.sh
+      MYSQL_DATABASE: web
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports: 
-      - '8080:80'
+      - '8800:80'
     links:
       - mysql
     environment:
       PMA_ARBITRARY: 1
       PMA_PORT: 3306
   composer:
-    image: composer
+    image: composer/composer:php7
     command: install
     volumes:
       - ./web:/app
