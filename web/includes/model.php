@@ -52,10 +52,6 @@ class db_model {
 
     $q = $conn->prepare($sql);
 
-    foreach($this->prop as $key => $value){
-      $bind_var = ':' . $key;
-      $q->bindParam($bind_var, $value, PDO::PARAM_STR);
-    }
-    $q->execute();
+    $q->execute($this->prop);
   }
 }
