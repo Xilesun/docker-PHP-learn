@@ -2,9 +2,13 @@
 class db_model {
   protected $table_name; //defined in individual object
   protected $prop = array();
+  private static $db = null;
 
   public static function setDB() {
-    return new PDO('mysql:host=mysql;dbname=web', 'root', 'yangqia');
+    if (is_null(self::$db)) {
+      self::$db = new PDO('mysql:host=mysql;dbname=web', 'root', 'yangqia');
+    }
+    return self::$db;
   }
 
   public function findByUser($value, $user) {
