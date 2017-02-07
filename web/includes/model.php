@@ -1,16 +1,16 @@
 <?
-include('conn.php');
-
 class db_model {
   protected $table_name; //defined in individual object
   protected $prop = array();
 
-  public function findByUser($value, $user) {
-    global $conn;
+  public static function setDB() {
+    return new PDO('mysql:host=mysql;dbname=web', 'root', 'yangqia');
+  }
 
+  public function findByUser($value, $user) {
     $sql = "SELECT " . $value . " FROM " . $this->table_name . " WHERE username = :user";
 
-    $q = $conn->prepare($sql);
+    $q = self::setDB()->prepare($sql);
     $q->bindParam(':user', $user, PDO::PARAM_STR);
     $q->execute();
 
@@ -31,8 +31,6 @@ class db_model {
   }
 
   public function save() {
-    global $conn;
-
     $sql_key = "";
     $sql_value = "";
     $n = 0;
@@ -50,7 +48,7 @@ class db_model {
 
     $sql = "INSERT INTO `" . $this->table_name . "`(" . $sql_key . ") VALUES (" . $sql_value . ")";
 
-    $q = $conn->prepare($sql);
+    $q = self::setDB()->prepare($sql);
 
     $q->execute($this->prop);
   }
