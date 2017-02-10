@@ -1,4 +1,6 @@
 <?
+namespace DB;
+
 class db_model {
   protected static $table_name; //defined in individual object
   protected $prop = array();

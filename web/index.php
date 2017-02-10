@@ -1,10 +1,10 @@
 <?php
 session_start();
-include('includes/model.php');
 require 'vendor/autoload.php';
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
+use DB\model;
 
 $route = new RouteCollector();
 
