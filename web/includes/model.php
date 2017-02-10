@@ -1,6 +1,6 @@
 <?
 class db_model {
-  protected $table_name; //defined in individual object
+  protected static $table_name; //defined in individual object
   protected $prop = array();
   private static $db = null;
 
@@ -11,19 +11,8 @@ class db_model {
     return self::$db;
   }
 
-  public function findByUser($value, $user) {
-    $sql = "SELECT " . $value . " FROM " . $this->table_name . " WHERE username = :user";
-
-    $q = self::setDB()->prepare($sql);
-    $q->bindParam(':user', $user, PDO::PARAM_STR);
-    $q->execute();
-
-    if($q->rowCount() > 0) {
-      $result = $q->fetch();
-      return $result;
-    } else {
-      return false;
-    }
+  public static function findByUser($value, $user) {
+    return true;
   }
 
   public function __set($key, $value) {
@@ -50,8 +39,7 @@ class db_model {
       }
     }
 
-    $sql = "INSERT INTO `" . $this->table_name . "`(" . $sql_key . ") VALUES (" . $sql_value . ")";
-
+    $sql = "INSERT INTO `" . static::$table_name . "`(" . $sql_key . ") VALUES (" . $sql_value . ")";
     $q = self::setDB()->prepare($sql);
 
     $q->execute($this->prop);

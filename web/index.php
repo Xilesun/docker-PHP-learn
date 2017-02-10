@@ -12,7 +12,22 @@ $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader);
 
 class User extends db_model {
-  protected $table_name = 'user';
+  protected static $table_name = 'user';
+
+  public static function findByUser($value, $user) {
+    $sql = "SELECT " . $value . " FROM " . self::$table_name . " WHERE username = :user";
+
+    $q = self::setDB()->prepare($sql);
+    $q->bindParam(':user', $user, PDO::PARAM_STR);
+    $q->execute();
+
+    if($q->rowCount() > 0) {
+      $result = $q->fetch();
+      return $result;
+    } else {
+      return false;
+    }
+  }
 }
 
 $route->get('/', function() use ($twig) {
@@ -41,12 +56,10 @@ $route->post('/signin', function(){
 
   global $conn;
 
-  $new_user = new User();
-
   $user = $_POST['user'];
   $pass = $_POST['pass'];
 
-  $result = $new_user->findByUser('password', $user);
+  $result = User::findByUser('password', $user);
 
   if($result) {
     if(password_verify($pass, $result['password'])) {
@@ -77,17 +90,15 @@ $route->post('/signup', function(){
   $new_user->email = $email;
 
   $new_user->save();
-  # header("location: /signin");
+  header("location: /signin");
 });
 
 $route->get('/validateuser', function(){  
   global $conn;
-  
-  $new_user = new User();
 
   $user = $_GET['user'];
   //check whether the username exists or not
-  $result = $new_user->findByUser('id', $user);
+  $result = User::findByUser('id', $user);
 
   if($result) {
     echo json_encode('Username exists');
