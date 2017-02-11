@@ -1,14 +1,14 @@
-<?
+<?php
 namespace DB;
 
-class db_model {
+class Model {
   protected static $table_name; //defined in individual object
   protected $prop = array();
   private static $db = null;
 
   public static function setDB() {
     if (is_null(self::$db)) {
-      self::$db = new PDO('mysql:host=mysql;dbname=web', 'root', 'yangqia');
+      self::$db = new \PDO('mysql:host=mysql;dbname=web', 'root', 'yangqia');
     }
     return self::$db;
   }

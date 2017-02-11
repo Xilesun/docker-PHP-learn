@@ -4,31 +4,12 @@ require 'vendor/autoload.php';
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
-use DB\model;
+use DB\User;
 
 $route = new RouteCollector();
 
 $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader);
-
-class User extends db_model {
-  protected static $table_name = 'user';
-
-  public static function findByUser($value, $user) {
-    $sql = "SELECT " . $value . " FROM " . self::$table_name . " WHERE username = :user";
-
-    $q = self::setDB()->prepare($sql);
-    $q->bindParam(':user', $user, PDO::PARAM_STR);
-    $q->execute();
-
-    if($q->rowCount() > 0) {
-      $result = $q->fetch();
-      return $result;
-    } else {
-      return false;
-    }
-  }
-}
 
 $route->get('/', function() use ($twig) {
   if(isset($_COOKIE['user'])) {
