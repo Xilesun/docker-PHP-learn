@@ -53,6 +53,7 @@ class Model {
 
     $q->execute($this->prop);
   }
+<<<<<<< HEAD:web/includes/model.php
 
   public function del($id) {
     $sql = "DELETE FROM " . static::$table_name . " WHERE id = ?";
@@ -61,3 +62,6 @@ class Model {
     $q->execute(array($id));
   }
 }
+=======
+}
+>>>>>>> 9c26cf8ead2160c686325a61b98e0ad9609d8694:web/includes/Model.php
