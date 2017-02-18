@@ -5,6 +5,8 @@ require 'vendor/autoload.php';
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
 use DB\User;
+use DB\Comment;
+use DB\Message;
 
 $route = new RouteCollector();
 
@@ -18,7 +20,25 @@ $route->get('/', function() use ($twig) {
   if(!isset($_SESSION['user'])) {
     header("location: /signin");
   }
-  echo $twig->render('homepage.html', array('user' => $_SESSION['user']));
+
+  $comments = Comment::all();
+  if(!$comments) {
+    $comments = [];
+  }
+
+  $all_msgs = Message::all();
+
+  if(!$all_msgs) {
+    $all_msgs = [];
+  } else {
+    foreach ($all_msgs as $value) {
+      if($value['username'] == $_SESSION['user']) {
+        $usr_msgs[] = $value;
+      }
+    }
+  }
+  
+  echo $twig->render('homepage.html', array('user' => $_SESSION['user'], 'comments' => $comments, 'msgs' => $usr_msgs));
 });
 
 $route->get('/signin', function() use ($twig) {
@@ -34,8 +54,6 @@ $route->get('/signup', function() use ($twig) {
 
 $route->post('/signin', function(){
   setcookie('user', null, -1);
-
-  global $conn;
 
   $user = $_POST['user'];
   $pass = $_POST['pass'];
@@ -58,8 +76,6 @@ $route->post('/signin', function(){
 });
 
 $route->post('/signup', function(){
-  global $conn;
-
   $new_user = new User();
 
   $user = $_POST['user'];
@@ -75,8 +91,6 @@ $route->post('/signup', function(){
 });
 
 $route->get('/validateuser', function(){  
-  global $conn;
-
   $user = $_GET['user'];
   //check whether the username exists or not
   $result = User::findByUser('id', $user);
@@ -91,6 +105,45 @@ $route->get('/validateuser', function(){
 $route->get('/logout', function(){
   session_destroy();
   setcookie('user', null, -1);
+  header("location: /");
+});
+
+$route->post('/post', function(){
+  $new_comment = new Comment();
+
+  $user = $_SESSION['user'];
+  $comment = $_POST['comment'];
+  $date = date('Y/m/d');
+
+  if(isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $new_comment->id = $id;
+  }
+
+  if(isset($_GET['user'])) {
+    $new_msg = new Message();
+
+    $target_user = $_GET['user'];
+
+    $new_msg->username = $target_user;
+    $new_msg->comment_user = $user;
+
+    $new_msg->save();
+  }
+
+  $new_comment->username = $user;
+  $new_comment->comment = $comment;
+  $new_comment->date = $date;
+
+  $new_comment->save();
+  header("location: /");
+});
+
+$route->get('/del', function(){
+  $new_comment = new Comment();
+  $id = $_GET['id'];
+
+  $new_comment->del($id);
   header("location: /");
 });
 

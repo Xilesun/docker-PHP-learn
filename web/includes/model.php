@@ -13,6 +13,10 @@ class Model {
     return self::$db;
   }
 
+  public static function all() {
+    return true;
+  }
+  
   public static function findByUser($value, $user) {
     return true;
   }
@@ -33,17 +37,27 @@ class Model {
 
     foreach($this->prop as $key => $value){
       $n++;
-      $sql_key .= "`" . $key . "`";
-      $sql_value .= ":" . $key;
+      $sql_set .= $key . "=" . ":" . $key;
       if($n != $count) {
-        $sql_key .= ", "; 
-        $sql_value .= ", ";
+        $sql_set .= ", ";
       }
     }
 
-    $sql = "INSERT INTO `" . static::$table_name . "`(" . $sql_key . ") VALUES (" . $sql_value . ")";
+    if(isset($this->prop['id'])) {
+      $sql = "UPDATE " . static::$table_name . " SET " . $sql_set . " WHERE id=:id";
+    } else {
+      $sql = "INSERT INTO " . static::$table_name . " SET " . $sql_set;
+    }
+    
     $q = self::setDB()->prepare($sql);
 
     $q->execute($this->prop);
+  }
+
+  public function del($id) {
+    $sql = "DELETE FROM " . static::$table_name . " WHERE id = ?";
+
+    $q = self::setDB()->prepare($sql);
+    $q->execute(array($id));
   }
 }

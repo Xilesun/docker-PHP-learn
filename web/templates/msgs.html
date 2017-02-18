@@ -1,0 +1,7 @@
+{% if msgs != [] %}
+  <ul class="msgs">
+  {% for item in msgs %}
+    <li>{{ item['comment_user'] }} replied you.</li>
+  {% endfor %}
+  </ul>
+{% endif %}

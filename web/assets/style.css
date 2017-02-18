@@ -38,3 +38,25 @@ body .warn {
   font-size: 14px;
   display: block;
 }
+textarea {
+  width: 400px;
+  height: 100px;
+}
+.logout_btn {
+  text-decoration: underline;
+  color: #000;
+  font-size: 14px;
+}
+ul {
+  padding: 0;
+  list-style: none;
+}
+.comments li {
+  margin: 20px 0;
+}
+.comments span {
+  font-size: 12px;
+}
+.msgs {
+  font-size: 12px;
+}
