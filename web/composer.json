@@ -5,7 +5,7 @@
   },
   "autoload": {
     "psr-4": {
-      "DB\\": "includes/"
+      "DB\\": "includes/Models"
     }
   }
 }

@@ -4,12 +4,14 @@
     <li>
       <div>{{ item.comment }}</div>
       <span>Name: {{ item.username }}</span>
-      <span>Date: {{ item.date }}</span>  
+      <span>Date: {{ item.date }}</span>
       {% if item.username == user %}
         <span class="edit" data-id="{{ item.id }}">
           <a href="#">edit</a>
         </span>
-        <span><a href="/del?id={{ item.id }}">delete</a></span>
+        <span class="del">
+          <a href="/comments/{{ item.id }}">delete</a>
+        </span>
       {% endif %}
       {% if item.username != user %}
         <span class="reply" 
