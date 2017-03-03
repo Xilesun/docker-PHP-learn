@@ -3,6 +3,7 @@ namespace DB;
 
 class Model {
   protected static $table_name; //defined in individual object
+  protected $id;
   protected $prop = array();
   private static $db = null;
 
@@ -43,7 +44,8 @@ class Model {
       }
     }
 
-    if(isset($this->prop['id'])) {
+    if(!is_null($this->id)) {
+      $this->prop['id'] = $this->id;
       $sql = "UPDATE " . static::$table_name . " SET " . $sql_set . " WHERE id=:id";
     } else {
       $sql = "INSERT INTO " . static::$table_name . " SET " . $sql_set;
@@ -54,10 +56,47 @@ class Model {
     $q->execute($this->prop);
   }
 
-  public function del($id) {
-    $sql = "DELETE FROM " . static::$table_name . " WHERE id = ?";
+  private static function deleteById($ids) {
+    if(!is_array($ids)) {
+      $ids = array($ids);
+    }
 
+    $count = count($ids);
+    $n = 0;
+    $id_sql = '';
+    foreach($ids as $number) {
+      $n++;
+      if(!is_numeric($number)) continue;
+      $id_sql .= '?';
+      if($n != $count) {
+        $id_sql .= ", ";
+      }
+    }
+
+    $sql = "DELETE FROM " . static::$table_name . " WHERE id IN (" . $id_sql . ")";
     $q = self::setDB()->prepare($sql);
-    $q->execute(array($id));
+    $q->execute($ids);
+  }
+
+  public static function __callStatic($name, $args) {
+    switch ($name) {
+      case 'delete':
+        static::deleteById($args[0]);
+        break;      
+      default:
+        echo "no such a function";
+        break;
+    }
+  }
+
+  public function __call($name, $args) {
+    switch ($name) {
+      case 'delete':
+        static::deleteById($this->id);
+        break;
+      default:
+        echo "no such a function";
+        break;
+    }
   }
 }

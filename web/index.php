@@ -58,13 +58,12 @@ $route->post('/comments', function(){
 });
 
 $route->put('/comments/{id:\d+}', function($id){
-  $new_comment = new Comment();
+  $new_comment = new Comment($id);
 
   $user = $_SESSION['user'];
   $comment = $_POST['comment'];
   $date = date('Y/m/d');
 
-  $new_comment->id = $id;
   $new_comment->username = $user;
   $new_comment->comment = $comment;
   $new_comment->date = $date;
@@ -99,10 +98,7 @@ $route->post('/comments/{name}', function($name){
 });
 
 $route->delete('/comments/{id:\d+}', function($id){
-  $new_comment = new Comment();
-  $comment_id = $id;
-
-  $new_comment->del($comment_id);
+  Comment::delete($id);
   return true;
 });
 
