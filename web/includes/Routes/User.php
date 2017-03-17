@@ -1,8 +1,10 @@
 <?php
 use DB\User;
+use Security\Cookie;
+use Security\SessionSecurity;
 
 $route->get('/signin', function() use ($twig) {
-  if(isset($_SESSION['user'])) {
+  if(!empty(SessionSecurity::find())) {
     header('location: /');
   }
   echo $twig->render('signin.html');
@@ -13,7 +15,7 @@ $route->get('/signup', function() use ($twig) {
 });
 
 $route->post('/signin', function(){
-  setcookie('user', null, -1);
+  Cookie::delete('user');
 
   $user = $_POST['user'];
   $pass = $_POST['pass'];
@@ -24,7 +26,7 @@ $route->post('/signin', function(){
     if(password_verify($pass, $result['password'])) {
       $_SESSION['user'] = $user;
       if($_POST['remember'] == 'on') {
-        setcookie('user', $user, time()+60*60*24*7);
+        Cookie::set('user', $user, time()+60*60*24*7);
       }
       header('location: /');
     } else {
@@ -64,6 +66,6 @@ $route->get('/validateuser', function(){
 
 $route->get('/logout', function(){
   session_destroy();
-  setcookie('user', null, -1);
+  Cookie::delete('user');
   header("location: /");
 });

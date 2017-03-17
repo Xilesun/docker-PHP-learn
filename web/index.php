@@ -1,11 +1,14 @@
 <?php
-session_start();
 require 'vendor/autoload.php';
-
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
 use DB\Comment;
 use DB\Message;
+use Security\SessionSecurity;
+use Security\Cookie;
+$handler = new SessionSecurity();
+session_set_save_handler($handler, true);
+session_start();
 
 $route = new RouteCollector();
 
@@ -13,10 +16,11 @@ $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader);
 
 $route->get('/', function() use ($twig) {
+  $cookie = Cookie::get('user');
   if(isset($_COOKIE['user'])) {
-    $_SESSION['user'] = $_COOKIE['user'];
+    $_SESSION['user'] = $cookie;
   }
-  if(!isset($_SESSION['user'])) {
+  if(empty(SessionSecurity::find())) {
     header("location: /signin");
   }
 
@@ -36,7 +40,6 @@ $route->get('/', function() use ($twig) {
       }
     }
   }
-  
   echo $twig->render('homepage.html', array('user' => $_SESSION['user'], 'comments' => $comments, 'msgs' => $usr_msgs));
 });
 
