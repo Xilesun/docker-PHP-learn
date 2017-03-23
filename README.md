@@ -7,3 +7,7 @@ Learn PHP with docker
 - 编写model
 - 进一步改进成留言板 2017.2.16
 - 学习RESTful api
+- 用数据库储存session并对session, cookie加密
+- 前端封装comment对象读取后台api
+- 引入smarty js模板
+- 运用promise, async/await处理前后台数据交互

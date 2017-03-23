@@ -1,5 +1,4 @@
-{% if comments != [] %}
-  <ul class="comments">
+<ul class="comments">
   {% for item in comments %}
     <li>
       <div>{{ item.comment }}</div>
@@ -7,21 +6,20 @@
       <span>Date: {{ item.date }}</span>
       {% if item.username == user %}
         <span class="edit" data-id="{{ item.id }}">
-          <a href="#">edit</a>
+          <a href="">edit</a>
         </span>
-        <span class="del">
-          <a href="/comments/{{ item.id }}">delete</a>
+        <span class="del" data-id="{{ item.id }}">
+          <a href="">delete</a>
         </span>
       {% endif %}
       {% if item.username != user %}
         <span class="reply" 
           data-user="{{ item.username }}" 
         >
-          <a href="#">reply</a>
+          <a href="">reply</a>
         </span>
       {% endif %}
     </li>
   {% endfor %}
-  </ul>
-{% endif %}
+</ul>
 

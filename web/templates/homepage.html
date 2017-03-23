@@ -5,13 +5,15 @@
 <link rel="stylesheet" type="text/css" href="../assets/style.css">
 <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+<script src="../assets/smart.min.js"></script>
+{% include "templates.html" %}
 {% endblock %}
 {% block content %}
 <div class="content">
   <span>Hello, {{ user }}</span>
   <a class="logout_btn" href="/logout">Logout</a>
   {% include "msgs.html" %}
-  <form id="comment" method="post" action="/comments">
+  <form id="comment" method="post" action="">
     <textarea id="content" name="comment" data-rule-required="true"></textarea><br />
     <input type="submit" name="submit" />
   </form>
@@ -19,5 +21,6 @@
 </div>
 {% endblock %}
 {% block js %}    
+<script src="../assets/comment.js"></script>
 <script src="../assets/script.js"></script>
 {% endblock %}

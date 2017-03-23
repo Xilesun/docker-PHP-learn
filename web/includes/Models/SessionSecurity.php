@@ -48,7 +48,7 @@ class SessionSecurity extends \SessionHandler {
 
   public function write($id, $data) {
     if (!$data) {
-      return false;
+      return true;
     } else {
       $data = $this->encrypt($data);
     }

@@ -57,12 +57,13 @@ $route->post('/comments', function(){
   $new_comment->date = $date;
 
   $new_comment->save();
-  header("location: /");
+
+  $commentArray = Comment::all();
+  return json_encode($commentArray);
 });
 
 $route->put('/comments/{id:\d+}', function($id){
   $new_comment = new Comment($id);
-
   $user = $_SESSION['user'];
   $comment = $_POST['comment'];
   $date = date('Y/m/d');
@@ -72,7 +73,7 @@ $route->put('/comments/{id:\d+}', function($id){
   $new_comment->date = $date;
 
   $new_comment->save();
-  header("location: /");
+  echo $comment;
 });
 
 $route->post('/comments/{name}', function($name){
@@ -97,7 +98,8 @@ $route->post('/comments/{name}', function($name){
 
   $new_msg->save();
 
-  header("location: /");
+  $commentArray = Comment::all();
+  return json_encode($commentArray);
 });
 
 $route->delete('/comments/{id:\d+}', function($id){
