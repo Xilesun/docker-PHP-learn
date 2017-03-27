@@ -10,4 +10,4 @@ Learn PHP with docker
 - 用数据库储存session并对session, cookie加密
 - 前端封装comment对象读取后台api
 - 引入smarty js模板
-- 运用promise, async/await处理前后台数据交互
+- 运用promise，处理前后台数据交互，解决save, delete的冲突
