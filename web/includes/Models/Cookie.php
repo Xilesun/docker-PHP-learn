@@ -13,7 +13,9 @@ class Cookie {
   }
 
   public static function get($key) {
-    $value = $_COOKIE[$key];
+    if(isset($_COOKIE[$key])) {
+      $value = $_COOKIE[$key];
+    }
     return self::decrypt($value);
   }
 

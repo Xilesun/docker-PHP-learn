@@ -23,4 +23,18 @@ class Comment extends Model {
       return false;
     }
   }
+
+  public static function findByPage($page, $size) {
+    $start = ($page - 1) * $size;
+    $sql = "SELECT * FROM " . self::$table_name . " ORDER BY id DESC LIMIT $start, $size";
+    $q = self::setDB()->prepare($sql);
+    $q->execute();
+
+    if($q->rowCount() > 0) {
+      $result = $q->fetchAll();
+      return $result;
+    } else {
+      return false;
+    }
+  }
 }

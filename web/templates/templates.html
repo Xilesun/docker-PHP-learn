@@ -1,14 +1,24 @@
 <script type="text/x-smarty-tmpl" id="new-comment">
+<ul>
+  {foreach $data as $i => $value}
   <li>
-    <div>{$comment}</div>
-    <span>Name: {$username}</span>
-    <span>Date: {$date}</span>
-    <span class="edit" data-id="{$id}">
+    <div>{$value.comment}</div>
+    <span>Name: {$value.username}</span>
+    <span>Date: {$value.date}</span>
+    <span class="edit" data-id="{$value.id}">
       <a href="">edit</a>
     </span>
-    <span class="del" data-id="{$id}">
+    <span class="del" data-id="{$value.id}">
       <a href="">delete</a>
     </span>
   </li>
+  {/foreach}
+</ul>
+{if $lastPage > 0}
+  <a class="btn-prev" href="/page/{$lastPage}">prev</a>
+{/if}
+{if $count > $page * 5}
+  <a class="btn-next" href="/page/{$nextPage}">next</a>
+{/if}
 </script>
 

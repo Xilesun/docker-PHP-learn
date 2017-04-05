@@ -14,7 +14,19 @@ class Model {
     return self::$db;
   }
 
+  public static function count() {
+    $sql = "SELECT COUNT(*) FROM " . static::$table_name;
+    $q = self::setDB()->prepare($sql);
+    $q->execute();
+    $result = $q->fetchColumn();
+    return $result;
+  }
+
   public static function all() {
+    return true;
+  }
+
+  public static function findByPage($page, $size) {
     return true;
   }
   

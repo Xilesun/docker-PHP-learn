@@ -24,15 +24,21 @@ $route->get('/', function() use ($twig) {
     header("location: /signin");
   }
 
-  $comments = Comment::all();
+  $comments = Comment::findByPage(1, 5);
   if(!$comments) {
     $comments = [];
+    $nextPage = -1;
+  } else {
+    $comments_count = Comment::count();
+    if ($comments_count > 5) {
+      $nextPage = 2;
+    }
   }
 
   $all_msgs = Message::all();
-
   if(!$all_msgs) {
     $all_msgs = [];
+    $usr_msgs = [];
   } else {
     foreach ($all_msgs as $value) {
       if($value['username'] == $_SESSION['user']) {
@@ -40,7 +46,50 @@ $route->get('/', function() use ($twig) {
       }
     }
   }
-  echo $twig->render('homepage.html', array('user' => $_SESSION['user'], 'comments' => $comments, 'msgs' => $usr_msgs));
+  echo $twig->render('homepage.html', array('user' => $_SESSION['user'], 'comments' => $comments, 'msgs' => $usr_msgs, 'page' => 1, 'nextPage' => $nextPage));
+});
+
+$route->get('/page/{page:\d+}', function($page) use ($twig) {
+  $cookie = Cookie::get('user');
+  if(isset($_COOKIE['user'])) {
+    $_SESSION['user'] = $cookie;
+  }
+  if(empty(SessionSecurity::find())) {
+    header("location: /signin");
+  }
+
+  $comments = Comment::findByPage($page, 5);
+  if(!$comments) {
+    $comments = [];
+    $lastPage = -1;
+    $nextPage = -1;
+  } else {
+    $comments_count = Comment::count();
+    if ($comments_count > $page * 5) {
+      $nextPage = $page + 1;
+    }
+    if ($page != 1) {
+      $lastPage = $page - 1;
+    }
+  }
+
+  $all_msgs = Message::all();
+  if(!$all_msgs) {
+    $all_msgs = [];
+    $usr_msgs = [];
+  } else {
+    foreach ($all_msgs as $value) {
+      if($value['username'] == $_SESSION['user']) {
+        $usr_msgs[] = $value;
+      }
+    }
+  }
+
+  if($_GET['rerender']) {
+    return json_encode(array($comments, $comments_count));
+    exit;
+  } 
+  echo $twig->render('homepage.html', array('user' => $_SESSION['user'], 'comments' => $comments, 'msgs' => $usr_msgs, 'lastPage' => $lastPage, 'page' => $page, 'nextPage' => $nextPage));
 });
 
 include('includes/Routes/User.php');
