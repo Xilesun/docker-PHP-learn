@@ -1,4 +1,7 @@
-Learn PHP with docker
+### A Simple Message Board
+
+Target: Learn PHP with docker
+
 - 使用docker搭建PHP环境
 - 简单登录注册页面
 - 使用jqueryvalidate plugin验证表单
